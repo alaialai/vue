@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TODO</title>
+	<style type="text/css">
+		.main{
+
+			margin: auto;
+		}
+	</style>
+	<script src="https://cdn.jsdeliver.net/npm/vue"></script>
+
+</head>
+<body>
+	<div id="app">
+		<input 	v-model="newtodo" 
+				placeholder="edit me"
+				v-on:keyup.enter="addNewItem"
+				>
+		<ul>
+			<li is="todo-item"
+				v-for="(todoitem,index) in todoitems"
+				v-on:remove="todoitems.splice(index,1)"
+				v-bind:key="todoitem.id"
+				v-bind:itemtext="todoitem.itemtext"
+			></li>
+		</ul>
+	</div>
+	<script>
+		Vue.component('todo-item',{
+			template:'\
+			<li>\
+			{{itemtext}}\
+		    <button v-on:click="$emit(\'remove\')">X</button>\
+			</li>',
+			props:['itemtext']
+		})
+		var app = new Vue({
+			el:'#app',
+			data:{
+				newtodo:'',
+				todoitems:[
+					{
+						id:1,
+						itemtext:'read'
+					},
+
+					{
+						id:2,
+						itemtext:'watch'
+					},
+				],
+				nextTodoId:4
+			},
+			methods:{
+				addNewItem:function (){
+					this.todoitems.push({
+						id:this.nextTodoId++,
+						itemtext:this.newtodo
+					}),
+					this.newtodo=''
+				}
+			}
+		})
+	</script>
+</body>
+</html>
